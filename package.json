@@ -1,0 +1,22 @@
+{
+  "name": "worldle-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "watch": "nodemon src/index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.17.0",
+    "nodemon": "^2.0.16",
+    "ts-node": "^10.8.1"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "console-stamp": "^3.0.6",
+    "dotenv": "^16.0.1"
+  }
+}
