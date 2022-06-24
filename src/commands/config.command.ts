@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CacheType, CommandInteraction, MessageEmbed } from "discord.js";
 import { Logger } from "../common/logger";
-import { FAILURE_EMOJI } from "../constants/emojis";
+import { FAILURE_EMOJI, SUCCESS_EMOJI } from "../constants/emojis";
 import { Config } from "../models/Config";
 
 export const CONFIG_COMMAND_NAME = "config";
@@ -21,9 +21,9 @@ export const configCommandHandler = async (interaction: CommandInteraction<Cache
     const replyEmbed = new MessageEmbed().setTitle(`Configuration for ${interaction.guild?.name}`).setTimestamp(new Date());
     const embedFields = (options: { gameChannelId?: string; interval?: number; cooldown?: number; enabled?: boolean }) =>
         replyEmbed
-            .addField("Channel", `<#${options.gameChannelId}>`)
-            .addField("Interval", `${options.interval ?? "Not set"}`)
-            .addField("Cooldown", `${options.cooldown ?? "Not set"}`)
+            .addField("Channel", `${options.gameChannelId ? "<#" + options.gameChannelId + ">" : "Not set"}`)
+            .addField("Interval", `${options.interval ?? "Not set"} hours`)
+            .addField("Cooldown", `${options.cooldown ?? "Not set"} minutes`)
             .addField("Enabled", `${!!options.enabled ? "Yes" : "No"}`);
 
     // no arguments - grab config
@@ -52,11 +52,17 @@ export const configCommandHandler = async (interaction: CommandInteraction<Cache
     };
 
     Config.upsert(newObj)
-        .then(() => {
+        .then(([config]) => {
+            // returned object does not contain all values for some reason
+            // there just return simple msg for now
+
             Logger.success(`Updated config for guild ${interaction.guildId}`);
-            interaction.reply({
-                embeds: [embedFields(newObj).setFooter({ text: `${interaction.user.username} updated config` })],
-            });
+            interaction.reply(
+                `${SUCCESS_EMOJI} Succesfully updated config`
+                //     {
+                //     embeds: [embedFields(config).setFooter({ text: `${interaction.user.username} updated config` })],
+                // }
+            );
         })
         .catch((e) => {
             Logger.error(e);
