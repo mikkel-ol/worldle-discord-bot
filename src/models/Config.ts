@@ -1,12 +1,16 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import { db } from "../database";
 
-export const Config = (db: Sequelize) =>
-    db.define("config", {
-        id: {
-            type: DataTypes.INTEGER,
-            unique: true,
-            primaryKey: true,
-        },
+export class Config extends Model<InferAttributes<Config>, InferCreationAttributes<Config>> {
+    declare guildId: string;
+    declare gameChannelId?: string;
+    declare interval?: number;
+    declare cooldown?: number;
+    declare enabled?: boolean;
+}
+
+Config.init(
+    {
         guildId: {
             type: DataTypes.STRING,
             unique: true,
@@ -15,7 +19,18 @@ export const Config = (db: Sequelize) =>
             type: DataTypes.STRING,
             unique: true,
         },
-        interval: DataTypes.INTEGER,
-        cooldown: DataTypes.INTEGER,
-        enabled: DataTypes.BOOLEAN,
-    });
+        interval: {
+            type: DataTypes.INTEGER,
+            defaultValue: process.env.DEFAULT_INTERVAL_HOURS,
+        },
+        cooldown: {
+            type: DataTypes.INTEGER,
+            defaultValue: process.env.DEFAULT_COOLDOWN_MINUTES,
+        },
+        enabled: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true,
+        },
+    },
+    { tableName: "config", sequelize: db }
+);

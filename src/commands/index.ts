@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
-import { Client, Interaction } from "discord.js";
+import { CacheType, Client, CommandInteraction } from "discord.js";
 import { Logger } from "../common/logger";
 import { DISCORD_CLIENT_ID } from "../env/client-id";
 import { DISCORD_BOT_TOKEN } from "../env/token";
@@ -24,7 +24,7 @@ export const deployCommands = () => {
         .catch(Logger.error);
 };
 
-const interactionHandlerMap = new Map<string, (interaction: Interaction) => unknown>([
+const interactionHandlerMap = new Map<string, (interaction: CommandInteraction<CacheType>) => unknown>([
     [CONFIG_COMMAND_NAME, configCommandHandler],
     [GUESS_COMMAND_NAME, guessCommandHandler],
 ]);

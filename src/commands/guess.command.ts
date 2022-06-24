@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Interaction } from "discord.js";
+import { CacheType, CommandInteraction } from "discord.js";
 import { MAX_ALLOWED_COMMAND_CHOICES } from "../constants/max-command-choices";
 import { countries } from "../domain/countries";
 
@@ -27,6 +27,6 @@ export const generateGuessCommand = () => {
     return builder;
 };
 
-export const guessCommandHandler = async (interaction: Interaction) => {
+export const guessCommandHandler = async (interaction: CommandInteraction<CacheType>) => {
     //
 };
