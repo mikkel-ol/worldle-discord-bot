@@ -5,11 +5,10 @@ import { DISCORD_CLIENT_ID } from "../env/client-id";
 import { DISCORD_BOT_TOKEN } from "../env/token";
 import { ArgumentError } from "../errors/argument.error";
 import "../extensions";
+import { configCommand } from "./config.command";
 import { generateGuessCommand } from "./guess.command";
 
-export const MAX_ALLOWED_COMMAND_CHOICES = 25;
-
-const commands = [generateGuessCommand()];
+const commands = [generateGuessCommand(), configCommand];
 
 export const deployCommands = () => {
     if (!DISCORD_BOT_TOKEN) throw new ArgumentError(`Discord bot token not set`);

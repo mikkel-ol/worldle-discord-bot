@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { MAX_ALLOWED_COMMAND_CHOICES } from "../constants/max-command-choices";
 import { countries } from "../domain/countries";
-import { MAX_ALLOWED_COMMAND_CHOICES } from "./deploy-commands";
 
 export const generateGuessCommand = () => {
     const builder = new SlashCommandBuilder().setName("guess").setDescription("Guess a country");

@@ -1,0 +1,1 @@
+export const MAX_ALLOWED_COMMAND_CHOICES = 25;
