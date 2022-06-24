@@ -3,7 +3,7 @@ import "dotenv/config";
 import { deployCommands } from "./commands/deploy-commands";
 import { Logger } from "./common/logger";
 
-const client = new Client({ intents: Intents.FLAGS.GUILDS });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.once("ready", () => {
     deployCommands();

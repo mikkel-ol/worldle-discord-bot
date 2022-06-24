@@ -5,12 +5,12 @@ import { Logger } from "../common/logger";
 import { DISCORD_CLIENT_ID } from "../env/client-id";
 import { DISCORD_BOT_TOKEN } from "../env/token";
 import { ArgumentError } from "../errors/argument.error";
-import { countryOptions } from "./countries.command";
+import "../extensions";
+import { addCountryOptions } from "./countries.command";
 
-const commands = new SlashCommandBuilder()
-    .setName("guess")
-    .setDescription("Guess a country")
-    .addStringOption((option) => option.setName("country").setDescription("asd").addChoices(countryOptions));
+const countryCommandBuilder = new SlashCommandBuilder().setName("guess").setDescription("Guess a country");
+
+const commands = [addCountryOptions(countryCommandBuilder)];
 
 export const deployCommands = () => {
     if (!DISCORD_BOT_TOKEN) throw new ArgumentError(`Discord bot token not set`);
