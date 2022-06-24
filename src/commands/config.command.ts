@@ -37,6 +37,9 @@ export const configCommandHandler = async (interaction: CommandInteraction<Cache
         });
     }
 
+    if (interaction.options.getChannel("channel")?.type !== "GUILD_TEXT")
+        return interaction.reply({ content: `${FAILURE_EMOJI} Channel is not a text channel`, ephemeral: true });
+
     // upsert new config
     const newGameChannelId = interaction.options.getChannel("channel")?.id;
     const newInterval = interaction.options.getInteger("interval");
