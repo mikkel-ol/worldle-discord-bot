@@ -1,12 +1,14 @@
 import { Client, Intents } from "discord.js";
 import "dotenv/config";
 import { deployCommands } from "./commands/deploy-commands";
+import { attachHandlers } from "./commands/interactions";
 import { Logger } from "./common/logger";
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+export const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.once("ready", () => {
     deployCommands();
+    attachHandlers(client);
     Logger.success("Logged in and ready!");
 });
 

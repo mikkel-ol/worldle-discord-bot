@@ -1,9 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { Interaction } from "discord.js";
 import { MAX_ALLOWED_COMMAND_CHOICES } from "../constants/max-command-choices";
 import { countries } from "../domain/countries";
 
+export const GUESS_COMMAND_NAME = "guess";
+
 export const generateGuessCommand = () => {
-    const builder = new SlashCommandBuilder().setName("guess").setDescription("Guess a country");
+    const builder = new SlashCommandBuilder().setName(GUESS_COMMAND_NAME).setDescription("Guess a country");
 
     const chunks = countries.sort((a, b) => a.name.localeCompare(b.name)).chunkize(MAX_ALLOWED_COMMAND_CHOICES);
 
@@ -22,4 +25,8 @@ export const generateGuessCommand = () => {
     });
 
     return builder;
+};
+
+export const guessCommandHandler = async (interaction: Interaction) => {
+    //
 };
