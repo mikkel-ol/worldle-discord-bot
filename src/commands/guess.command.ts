@@ -20,7 +20,7 @@ export const generateGuessCommand = () => {
             option
                 .setName(optionText)
                 .setDescription(descriptionText)
-                .addChoices(chunk.map((country) => [country.name, country.code]))
+                .addChoices(...chunk.map((country) => ({ name: country.name, value: country.code })))
         );
     });
 
