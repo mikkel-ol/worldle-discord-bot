@@ -1,10 +1,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { countries } from "../domain/countries";
+import { MAX_ALLOWED_COMMAND_CHOICES } from "./deploy-commands";
 
-const MAX_ALLOWED_CHOICES = 25;
+export const generateGuessCommand = () => {
+    const builder = new SlashCommandBuilder().setName("guess").setDescription("Guess a country");
 
-export const addCountryOptions = (builder: SlashCommandBuilder) => {
-    const chunks = countries.sort((a, b) => a.name.localeCompare(b.name)).chunkize(MAX_ALLOWED_CHOICES);
+    const chunks = countries.sort((a, b) => a.name.localeCompare(b.name)).chunkize(MAX_ALLOWED_COMMAND_CHOICES);
 
     chunks.forEach((chunk) => {
         const firstLetterOfFirstCountry = chunk.first().name.charAt(0);

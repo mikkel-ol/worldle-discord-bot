@@ -1,4 +1,3 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
 import { Logger } from "../common/logger";
@@ -6,11 +5,11 @@ import { DISCORD_CLIENT_ID } from "../env/client-id";
 import { DISCORD_BOT_TOKEN } from "../env/token";
 import { ArgumentError } from "../errors/argument.error";
 import "../extensions";
-import { addCountryOptions } from "./countries.command";
+import { generateGuessCommand } from "./guess.command";
 
-const countryCommandBuilder = new SlashCommandBuilder().setName("guess").setDescription("Guess a country");
+export const MAX_ALLOWED_COMMAND_CHOICES = 25;
 
-const commands = [addCountryOptions(countryCommandBuilder)];
+const commands = [generateGuessCommand()];
 
 export const deployCommands = () => {
     if (!DISCORD_BOT_TOKEN) throw new ArgumentError(`Discord bot token not set`);
