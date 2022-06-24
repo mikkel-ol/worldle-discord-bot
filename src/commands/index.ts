@@ -1,12 +1,13 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
+import { Client, Interaction } from "discord.js";
 import { Logger } from "../common/logger";
 import { DISCORD_CLIENT_ID } from "../env/client-id";
 import { DISCORD_BOT_TOKEN } from "../env/token";
 import { ArgumentError } from "../errors/argument.error";
 import "../extensions";
-import { configCommand } from "./config.command";
-import { generateGuessCommand } from "./guess.command";
+import { configCommand, configCommandHandler, CONFIG_COMMAND_NAME } from "./config.command";
+import { generateGuessCommand, guessCommandHandler, GUESS_COMMAND_NAME } from "./guess.command";
 
 const commands = [generateGuessCommand(), configCommand];
 
@@ -22,3 +23,19 @@ export const deployCommands = () => {
         .then(() => Logger.success("Registered application commands"))
         .catch(Logger.error);
 };
+
+const interactionHandlerMap = new Map<string, (interaction: Interaction) => unknown>([
+    [CONFIG_COMMAND_NAME, configCommandHandler],
+    [GUESS_COMMAND_NAME, guessCommandHandler],
+]);
+
+export const attachHandlers = (client: Client) =>
+    client.on("interactionCreate", async (interaction) => {
+        if (!interaction.isCommand()) return;
+
+        const handler = interactionHandlerMap.get(interaction.commandName);
+
+        if (!handler) return console.warn(`No handler for command: '${interaction.commandName}'`);
+
+        handler(interaction);
+    });

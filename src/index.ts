@@ -1,7 +1,6 @@
 import { Client, Intents } from "discord.js";
 import "dotenv/config";
-import { deployCommands } from "./commands/deploy-commands";
-import { attachHandlers } from "./commands/interactions";
+import { attachHandlers, deployCommands } from "./commands";
 import { Logger } from "./common/logger";
 import { initDatabase } from "./database";
 
