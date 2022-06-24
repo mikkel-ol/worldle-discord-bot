@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CacheType, CommandInteraction } from "discord.js";
 import { MAX_ALLOWED_COMMAND_CHOICES } from "../constants/max-command-choices";
-import { countries } from "../domain/countries";
+import { countries } from "../country/countries";
 
 export const GUESS_COMMAND_NAME = "guess";
 
