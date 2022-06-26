@@ -1,1 +1,1 @@
-export const generateEpoch = () => Math.round(new Date().getTime() / 1000);
+export const generateEpoch = (date = new Date()) => Math.round(date.getTime() / 1000);

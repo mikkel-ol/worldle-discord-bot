@@ -19,5 +19,5 @@ Guess.init(
         direction: DataTypes.STRING,
         percentage: DataTypes.INTEGER,
     },
-    { tableName: "game", sequelize: db }
+    { tableName: "guess", sequelize: db }
 );

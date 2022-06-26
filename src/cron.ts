@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import { client } from ".";
 import { newGame } from "./games/generate";
+import { stopCurrentGame } from "./games/stop";
 import { Config } from "./models/Config";
 
 const onTick = async () => {
@@ -9,11 +10,12 @@ const onTick = async () => {
 
     const guildsWithActiveGames = guilds.filter((g) => allConfigs.some((c) => c.guildId === g.id && !!c.enabled));
 
-    guildsWithActiveGames.forEach((guild) => {
+    guildsWithActiveGames.forEach(async (guild) => {
         const config = allConfigs.find((x) => x.guildId === guild.id);
 
         if (!config?.gameChannelId) throw new Error(`No channel ID found on config ${config}`);
 
+        await stopCurrentGame(client, config);
         newGame(client, config);
     });
 };

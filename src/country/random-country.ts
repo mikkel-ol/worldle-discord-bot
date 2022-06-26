@@ -1,9 +1,9 @@
-import { countries } from "./countries";
+import { countriesArray } from "./countries";
 
 export const randCountry = () => {
     // TODO: Make an iPod shuffle algorithm
-    const randIndex = Math.floor(Math.random() * countries.length);
-    const country = countries[randIndex];
+    const randIndex = Math.floor(Math.random() * countriesArray.length);
+    const country = countriesArray[randIndex];
 
     return country;
 };

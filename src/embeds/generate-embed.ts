@@ -1,6 +1,6 @@
 import { Client, MessageEmbed } from "discord.js";
 import { WHITE_SQUARE_EMOJI_ID } from "../constants/emojis";
-import { NO_OF_GUESSES } from "../constants/guess";
+import { NO_OF_GUESSES } from "../constants/game";
 import { NO_OF_WHITE_SQUARES } from "../constants/messages";
 import { Country } from "../country/country";
 
