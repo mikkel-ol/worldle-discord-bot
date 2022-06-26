@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import { client } from ".";
-import { generateNewEmbed } from "./embeds/generate";
+import { newGame } from "./games/generate";
 import { Config } from "./models/Config";
 
 const onTick = async () => {
@@ -14,7 +14,7 @@ const onTick = async () => {
 
         if (!config?.gameChannelId) throw new Error(`No channel ID found on config ${config}`);
 
-        generateNewEmbed(client, guild, config);
+        newGame(client, config);
     });
 };
 

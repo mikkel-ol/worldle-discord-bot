@@ -1,4 +1,4 @@
-import { Client, MessageEmbed, OAuth2Guild, TextChannel } from "discord.js";
+import { Client, MessageEmbed, TextChannel } from "discord.js";
 import { Logger } from "../common/logger";
 import { WHITE_SQUARE_EMOJI_ID } from "../constants/emojis";
 import { NO_OF_GUESSES } from "../constants/guess";
@@ -7,7 +7,7 @@ import { randCountry } from "../country/random-country";
 import { Config } from "../models/Config";
 import { generateEpoch } from "../utils/epoch";
 
-export const generateNewEmbed = async (client: Client, guild: OAuth2Guild, config: Config) => {
+export const newGame = async (client: Client, config: Config) => {
     if (!config?.gameChannelId) return Logger.error(`No channel ID found on config ${config}`);
 
     const channel = (await client.channels.fetch(config.gameChannelId)) as TextChannel;
@@ -32,5 +32,5 @@ export const generateNewEmbed = async (client: Client, guild: OAuth2Guild, confi
             `https://raw.githubusercontent.com/mikkel-ol/worldle-discord-bot/293db7a/assets/countries/${newCountry.code.toLowerCase()}/1024.png`
         );
 
-    channel.send({ embeds: [embed] });
+    // channel.send({ embeds: [embed] });
 };
