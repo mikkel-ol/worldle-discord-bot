@@ -2,9 +2,10 @@ import { Client, Intents } from "discord.js";
 import "dotenv/config";
 import { attachHandlers, deployCommands } from "./commands";
 import { Logger } from "./common/logger";
+import "./cron";
 import { db } from "./database";
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+export const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.once("ready", () => {
     // TODO: Make sure a config exists for all servers
