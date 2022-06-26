@@ -7,9 +7,9 @@ const onTick = async () => {
     const guilds = await client.guilds.fetch();
     const allConfigs = await Config.findAll();
 
-    const guildsWithConfig = guilds.filter((g) => allConfigs.some((c) => c.guildId === g.id));
+    const guildsWithActiveGames = guilds.filter((g) => allConfigs.some((c) => c.guildId === g.id && !!c.enabled));
 
-    guildsWithConfig.forEach((guild) => {
+    guildsWithActiveGames.forEach((guild) => {
         const config = allConfigs.find((x) => x.guildId === guild.id);
 
         if (!config?.gameChannelId) throw new Error(`No channel ID found on config ${config}`);
