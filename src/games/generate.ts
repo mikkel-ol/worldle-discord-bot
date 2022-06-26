@@ -23,18 +23,19 @@ export const newGame = async (client: Client, config: Config) => {
 
     const newCountry = randCountry();
 
+    const started = generateEpoch();
     const expiration = generateEpoch(addHours(config?.interval ?? Number(process.env.DEFAULT_INTERVAL_HOURS) ?? 0));
 
     const newGame = await Game.create({
         active: true,
         guildId: config.guildId,
         countryId: newCountry.code,
+        started: started,
         expiration: expiration,
     });
 
     const embedOptions: GuessEmbed = {
-        channelId: config.gameChannelId,
-        country: newCountry,
+        countryCode: newCountry.code,
         startedTimeStamp: generateEpoch(),
         timeRemainingTimeStamp: expiration,
     };

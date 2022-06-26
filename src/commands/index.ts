@@ -7,9 +7,10 @@ import { DISCORD_BOT_TOKEN } from "../env/token";
 import { ArgumentError } from "../errors/argument.error";
 import "../extensions";
 import { configCommand, configCommandHandler, CONFIG_COMMAND_NAME } from "./config.command";
+import { gameCommand, gameCommandHandler, GAME_COMMAND_NAME } from "./game.command";
 import { generateGuessCommand, guessCommandHandler, GUESS_COMMAND_NAME } from "./guess.command";
 
-const commands = [generateGuessCommand(), configCommand];
+const commands = [generateGuessCommand(), configCommand, gameCommand];
 
 export const deployCommands = () => {
     if (!DISCORD_BOT_TOKEN) throw new ArgumentError(`Discord bot token not set`);
@@ -27,6 +28,7 @@ export const deployCommands = () => {
 const interactionHandlerMap = new Map<string, (interaction: CommandInteraction<CacheType>) => unknown>([
     [CONFIG_COMMAND_NAME, configCommandHandler],
     [GUESS_COMMAND_NAME, guessCommandHandler],
+    [GAME_COMMAND_NAME, gameCommandHandler],
 ]);
 
 export const attachHandlers = (client: Client) =>

@@ -7,6 +7,7 @@ export class Game extends Model<InferAttributes<Game>, InferCreationAttributes<G
     declare guildId: string;
     declare active: boolean;
     declare countryId: string;
+    declare started: number;
     declare expiration: number;
     declare guesses?: NonAttribute<Guess[]>;
 
@@ -20,6 +21,7 @@ Game.init(
         guildId: DataTypes.STRING,
         active: DataTypes.BOOLEAN,
         countryId: DataTypes.STRING,
+        started: DataTypes.INTEGER,
         expiration: DataTypes.INTEGER,
     },
     { tableName: "game", sequelize: db }

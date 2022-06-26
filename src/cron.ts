@@ -1,4 +1,3 @@
-import cron from "node-cron";
 import { client } from ".";
 import { newGame } from "./games/generate";
 import { stopCurrentGame } from "./games/stop";
@@ -25,6 +24,6 @@ setTimeout(() => {
 }, 1000);
 
 // every minute
-cron.schedule("0 * * * * *", onTick);
+// cron.schedule("0 * * * * *", onTick);
 
 export {};
