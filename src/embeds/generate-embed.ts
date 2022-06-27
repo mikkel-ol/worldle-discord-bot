@@ -54,8 +54,6 @@ export const generateEmbed = (client: Client, params: GuessEmbed) => {
 
     const descriptionString = description.join("\n");
 
-    console.log(params.game.state);
-
     const noOfGuessesLeft = NO_OF_GUESSES - ((params.guesses && params.guesses.length) ?? 0);
     const color = params.game.state === GameState.Active ? "YELLOW" : params.game.state === GameState.Solved ? "DARK_GREEN" : "DARK_RED";
 
