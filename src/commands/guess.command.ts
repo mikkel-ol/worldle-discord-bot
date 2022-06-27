@@ -6,6 +6,7 @@ import { MAX_ALLOWED_COMMAND_CHOICES } from "../constants/max-command-choices";
 import { countriesArray, countriesMap } from "../country/countries";
 import { doGuess } from "../games/guess";
 import { Game } from "../models/Game";
+import { GameState } from "../types/GameState";
 
 export const GUESS_COMMAND_NAME = "guess";
 
@@ -47,12 +48,12 @@ export const guessCommandHandler = async (interaction: CommandInteraction<CacheT
         Logger.error(`Could not found country with code ${guessCountry}`);
 
         return interaction.reply({
-            content: `${FAILURE_EMOJI} Something with wrong.. tried to guess country with code ${guessCountryCode}`,
+            content: `${FAILURE_EMOJI} Something with wrong... tried to guess country with code ${guessCountryCode}`,
             ephemeral: true,
         });
     }
 
-    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId, isActive: true } });
+    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId, state: GameState.Active } });
 
     if (!currentGame) {
         Logger.error(`No game found for guild with ID ${interaction.guildId}`);

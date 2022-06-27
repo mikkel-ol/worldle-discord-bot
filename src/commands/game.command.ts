@@ -5,6 +5,7 @@ import { FAILURE_EMOJI } from "../constants/emojis";
 import { generateEmbed, GuessEmbed } from "../embeds/generate-embed";
 import { Game } from "../models/Game";
 import { Guess } from "../models/Guess";
+import { GameState } from "../types/GameState";
 
 export const GAME_COMMAND_NAME = "game";
 
@@ -14,7 +15,7 @@ export const gameCommandHandler = async (interaction: CommandInteraction<CacheTy
     // ignore DM's
     if (!interaction.guildId) return;
 
-    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId, isActive: true } });
+    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId, state: GameState.Active } });
 
     if (!currentGame) {
         Logger.error(`No game found for guild with ID ${interaction.guildId}`);

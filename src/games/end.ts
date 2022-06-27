@@ -1,28 +1,32 @@
 import { Client, TextChannel } from "discord.js";
 import { Logger } from "../common/logger";
+import { NO_OF_GUESSES } from "../constants/game";
 import { generateEmbed, GuessEmbed } from "../embeds/generate-embed";
 import { Config } from "../models/Config";
 import { Game } from "../models/Game";
 import { Guess } from "../models/Guess";
+import { GameState } from "../types/GameState";
+import { generateEpoch } from "../utils/epoch";
 
-export const endCurrentGame = async (client: Client, config: Config) => {
-    const currentGame = await Game.findOne({ where: { guildId: config.guildId, isActive: true } });
+export const endCurrentGame = async (client: Client, game: Game, guesses: Guess[]) => {
+    if (guesses.length === NO_OF_GUESSES) game.state = GameState.Failed;
+    else if (game.expiration > generateEpoch()) game.state = GameState.TimeIsUp;
+    else game.state === GameState.Solved;
 
-    if (!currentGame) {
-        return Logger.error(`No game found for guild ${config.guildId}`);
-    }
-
-    currentGame.isActive = false;
-    await currentGame.save();
-
-    const guesses = await Guess.findAll({ where: { gameId: currentGame.id } });
+    await game.save();
 
     const embedOptions: GuessEmbed = {
-        game: currentGame,
-        guesses: guesses,
+        game,
+        guesses,
     };
 
     const embed = generateEmbed(client, embedOptions);
+
+    const config = await Config.findOne({ where: { guildId: game.guildId } });
+
+    if (!config) {
+        return Logger.error(`Could not find config for guild with ID ${game.guildId}`);
+    }
 
     const channel = (await client.channels.fetch(config.gameChannelId ?? "")) as TextChannel;
 

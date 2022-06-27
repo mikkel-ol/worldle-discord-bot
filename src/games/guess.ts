@@ -1,11 +1,14 @@
 import { CacheType, CommandInteraction } from "discord.js";
 import * as geolib from "geolib";
 import { LONGEST_DISTANCE } from "../constants/earth";
+import { NO_OF_GUESSES } from "../constants/game";
 import { countriesMap } from "../country/countries";
 import { Country } from "../country/country";
 import { generateEmbed, GuessEmbed } from "../embeds/generate-embed";
 import { Game } from "../models/Game";
 import { Guess } from "../models/Guess";
+import { GameState } from "../types/GameState";
+import { endCurrentGame } from "./end";
 
 export const doGuess = async (interaction: CommandInteraction<CacheType>, guessedCountry: Country, currentGame: Game) => {
     // succesful guess
@@ -19,8 +22,7 @@ export const doGuess = async (interaction: CommandInteraction<CacheType>, guesse
             percentage: 100,
         });
 
-        currentGame.isActive = false;
-        currentGame.isSolved = true;
+        currentGame.state = GameState.Solved;
 
         await currentGame.save();
 
@@ -57,6 +59,11 @@ export const doGuess = async (interaction: CommandInteraction<CacheType>, guesse
     });
 
     const guesses = await Guess.findAll({ where: { gameId: currentGame?.id } });
+
+    if (guesses.length === NO_OF_GUESSES) {
+        // all guesses used
+        endCurrentGame(interaction.client, currentGame, guesses);
+    }
 
     const embedParams: GuessEmbed = {
         game: currentGame,

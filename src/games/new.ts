@@ -4,6 +4,7 @@ import { randCountry } from "../country/random-country";
 import { generateEmbed, GuessEmbed } from "../embeds/generate-embed";
 import { Config } from "../models/Config";
 import { Game } from "../models/Game";
+import { GameState } from "../types/GameState";
 import { addHours } from "../utils/add-hours";
 import { generateEpoch } from "../utils/epoch";
 
@@ -15,7 +16,7 @@ export const newGame = async (client: Client, config: Config) => {
 
     if (!channel) return Logger.error(`Could not fetch channel with ID ${config.gameChannelId}, got ${channel}`);
 
-    const hasExistingGame = await Game.findOne({ where: { guildId: config.guildId, isActive: true } });
+    const hasExistingGame = await Game.findOne({ where: { guildId: config.guildId, state: GameState.Active } });
 
     if (hasExistingGame) {
         return Logger.error(`There is already an existing game for guild with ID ${config.guildId}`);
@@ -27,8 +28,7 @@ export const newGame = async (client: Client, config: Config) => {
     const expiration = generateEpoch(addHours(config?.interval ?? Number(process.env.DEFAULT_INTERVAL_HOURS) ?? 0));
 
     const newGame = await Game.create({
-        isActive: true,
-        isSolved: false,
+        state: GameState.Active,
         guildId: config.guildId,
         countryId: newCountry.code,
         started: started,
