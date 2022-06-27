@@ -3,6 +3,7 @@ import * as geolib from "geolib";
 import { LONGEST_DISTANCE } from "../constants/earth";
 import { countriesMap } from "../country/countries";
 import { Country } from "../country/country";
+import { generateEmbed, GuessEmbed } from "../embeds/generate-embed";
 import { Game } from "../models/Game";
 import { Guess } from "../models/Guess";
 
@@ -44,4 +45,15 @@ export const doGuess = async (interaction: CommandInteraction<CacheType>, guesse
         distance: distanceInMeters,
         percentage: percentage,
     });
+
+    const guesses = await Guess.findAll({ where: { gameId: currentGame?.id } });
+
+    const embedParams: GuessEmbed = {
+        countryCode: currentGame.countryId,
+        startedTimeStamp: currentGame.started,
+        timeRemainingTimeStamp: currentGame.expiration,
+        guesses: guesses,
+    };
+
+    return interaction.reply({ embeds: [generateEmbed(interaction.client, embedParams)] });
 };

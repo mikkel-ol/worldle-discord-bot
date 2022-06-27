@@ -1,0 +1,1 @@
+export const AUTHOR_ID = "672036959212011571";
