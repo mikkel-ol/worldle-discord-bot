@@ -19,9 +19,19 @@ export const doGuess = async (interaction: CommandInteraction<CacheType>, guesse
             percentage: 100,
         });
 
-        // TODO: Finish game
+        currentGame.isActive = false;
+        currentGame.isSolved = true;
 
-        return interaction.reply("success");
+        await currentGame.save();
+
+        const guesses = await Guess.findAll({ where: { gameId: currentGame?.id } });
+
+        const embedParams: GuessEmbed = {
+            game: currentGame,
+            guesses: guesses,
+        };
+
+        return interaction.reply({ embeds: [generateEmbed(interaction.client, embedParams)] });
     }
 
     // unsuccesful guess
@@ -49,9 +59,7 @@ export const doGuess = async (interaction: CommandInteraction<CacheType>, guesse
     const guesses = await Guess.findAll({ where: { gameId: currentGame?.id } });
 
     const embedParams: GuessEmbed = {
-        countryCode: currentGame.countryId,
-        startedTimeStamp: currentGame.started,
-        timeRemainingTimeStamp: currentGame.expiration,
+        game: currentGame,
         guesses: guesses,
     };
 

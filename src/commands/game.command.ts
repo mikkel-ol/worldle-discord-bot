@@ -14,7 +14,7 @@ export const gameCommandHandler = async (interaction: CommandInteraction<CacheTy
     // ignore DM's
     if (!interaction.guildId) return;
 
-    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId } });
+    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId, isActive: true } });
 
     if (!currentGame) {
         Logger.error(`No game found for guild with ID ${interaction.guildId}`);
@@ -25,9 +25,7 @@ export const gameCommandHandler = async (interaction: CommandInteraction<CacheTy
     const guesses = await Guess.findAll({ where: { gameId: currentGame?.id } });
 
     const embedParams: GuessEmbed = {
-        countryCode: currentGame.countryId,
-        startedTimeStamp: currentGame.started,
-        timeRemainingTimeStamp: currentGame.expiration,
+        game: currentGame,
         guesses: guesses,
     };
 

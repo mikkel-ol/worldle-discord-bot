@@ -1,6 +1,6 @@
 import { client } from ".";
-import { newGame } from "./games/generate";
-import { stopCurrentGame } from "./games/stop";
+import { endCurrentGame } from "./games/end";
+import { newGame } from "./games/new";
 import { Config } from "./models/Config";
 
 const onTick = async () => {
@@ -14,14 +14,14 @@ const onTick = async () => {
 
         if (!config?.gameChannelId) throw new Error(`No channel ID found on config ${config}`);
 
-        await stopCurrentGame(client, config);
+        await endCurrentGame(client, config);
         newGame(client, config);
     });
 };
 
 setTimeout(() => {
     onTick();
-}, 1000);
+}, 2000);
 
 // every minute
 // cron.schedule("0 * * * * *", onTick);

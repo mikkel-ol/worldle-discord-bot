@@ -15,7 +15,7 @@ export const newGame = async (client: Client, config: Config) => {
 
     if (!channel) return Logger.error(`Could not fetch channel with ID ${config.gameChannelId}, got ${channel}`);
 
-    const hasExistingGame = await Game.findOne({ where: { guildId: config.guildId, active: true } });
+    const hasExistingGame = await Game.findOne({ where: { guildId: config.guildId, isActive: true } });
 
     if (hasExistingGame) {
         return Logger.error(`There is already an existing game for guild with ID ${config.guildId}`);
@@ -27,7 +27,8 @@ export const newGame = async (client: Client, config: Config) => {
     const expiration = generateEpoch(addHours(config?.interval ?? Number(process.env.DEFAULT_INTERVAL_HOURS) ?? 0));
 
     const newGame = await Game.create({
-        active: true,
+        isActive: true,
+        isSolved: false,
         guildId: config.guildId,
         countryId: newCountry.code,
         started: started,
@@ -35,9 +36,7 @@ export const newGame = async (client: Client, config: Config) => {
     });
 
     const embedOptions: GuessEmbed = {
-        countryCode: newCountry.code,
-        startedTimeStamp: generateEpoch(),
-        timeRemainingTimeStamp: expiration,
+        game: newGame,
     };
 
     const embed = generateEmbed(client, embedOptions);

@@ -52,7 +52,7 @@ export const guessCommandHandler = async (interaction: CommandInteraction<CacheT
         });
     }
 
-    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId } });
+    const currentGame = await Game.findOne({ where: { guildId: interaction.guildId, isActive: true } });
 
     if (!currentGame) {
         Logger.error(`No game found for guild with ID ${interaction.guildId}`);
