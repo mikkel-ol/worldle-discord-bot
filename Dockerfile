@@ -1,10 +1,11 @@
 FROM node:16
 
-COPY ["package.json", "package-lock.json*", "./"]
+COPY ["package.json", "package-lock.json*", "tsconfig.json", "./"]
 
-RUN npm install --production
+RUN npm install
 
 COPY . .
 
-CMD [ "npm", "start" ]
+RUN npm run build
 
+CMD [ "node", "build/index.js" ]
