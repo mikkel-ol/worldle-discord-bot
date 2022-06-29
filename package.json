@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "build": "tsc --outDir build",
         "start": "ts-node src/index.ts",
         "watch": "nodemon src/index.ts"
     },
