@@ -19,7 +19,7 @@ export const newGame = async (client: Client, config: Config) => {
     const hasExistingGame = await Game.findOne({ where: { guildId: config.guildId, state: GameState.Active } });
 
     if (hasExistingGame) {
-        return Logger.error(`There is already an existing game for guild with ID ${config.guildId}`);
+        return Logger.info(`There is already an existing game for guild with ID ${config.guildId}`);
     }
 
     const newCountry = randCountry();

@@ -1,4 +1,4 @@
-import { DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import { DataTypes, InferAttributes, InferCreationAttributes, Model, NonAttribute } from "sequelize";
 import { db } from "../database";
 
 export class Guess extends Model<InferAttributes<Guess>, InferCreationAttributes<Guess>> {
@@ -8,6 +8,8 @@ export class Guess extends Model<InferAttributes<Guess>, InferCreationAttributes
     declare distance: number;
     declare direction: string;
     declare percentage: number;
+    declare createdAt: NonAttribute<Date>;
+    declare updatedAt: NonAttribute<Date>;
 }
 
 Guess.init(

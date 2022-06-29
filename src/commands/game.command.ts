@@ -18,7 +18,7 @@ export const gameCommandHandler = async (interaction: CommandInteraction<CacheTy
     const currentGame = await Game.findOne({ where: { guildId: interaction.guildId, state: GameState.Active } });
 
     if (!currentGame) {
-        Logger.error(`No game found for guild with ID ${interaction.guildId}`);
+        Logger.info(`User ${interaction.user.username} tried to get game for guild with ID ${interaction.guildId} but no game found`);
 
         return interaction.reply({ content: `${FAILURE_EMOJI} No active game found`, ephemeral: true });
     }
